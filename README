@@ -1,0 +1,6 @@
+var params:ISFSObject = new SFSObject();
+params.putUtfString("session", "f15c9bbf92341f2b303e9ed486ebb12a564cedcb");
+params.putUtfString("room", "lobby");
+			
+var request:IRequest = new LoginRequest("","","", params);
+send(request);
