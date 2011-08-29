@@ -46,7 +46,7 @@ public class UserLoginEventHandler extends BaseServerEventHandler {
             String nickname = res.getString("nickname");
             String passwordDigest = res.getString("password_digest");
             Boolean isRegistered = true;
-            if ( passwordDigest.isEmpty()) {
+            if ( passwordDigest == null ) {
             	isRegistered = false;
             }
             
