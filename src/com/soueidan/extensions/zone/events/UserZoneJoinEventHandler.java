@@ -20,7 +20,7 @@ public class UserZoneJoinEventHandler extends BaseServerEventHandler {
 		User user = (User) event.getParameter(SFSEventParam.USER);
 		ISession session = user.getSession();
 		
-		UserVariable userId = new SFSUserVariable("dbid", session.getProperty(ZoneExtension.USER_ID));
+		UserVariable userId = new SFSUserVariable(ZoneExtension.USER_ID, session.getProperty(ZoneExtension.USER_ID));
 		userId.setHidden(true);
 		
 		UserVariable userVip = new SFSUserVariable(ZoneExtension.USER_VIP, session.getProperty(ZoneExtension.USER_VIP));
