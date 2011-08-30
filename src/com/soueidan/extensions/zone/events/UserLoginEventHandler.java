@@ -34,7 +34,7 @@ public class UserLoginEventHandler extends BaseServerEventHandler {
         try {
         	Connection connection = dbManager.getConnection();
         	
-        	PreparedStatement stmt = connection.prepareStatement("SELECT id, nickname, password_digest FROM users where session=? limit 1");
+        	PreparedStatement stmt = connection.prepareStatement("SELECT id, nickname, status, vip FROM users where session=? limit 1");
     		stmt.setString(1, session);
     		
         	ResultSet res = stmt.executeQuery();
@@ -44,17 +44,15 @@ public class UserLoginEventHandler extends BaseServerEventHandler {
 			}
         		
             String nickname = res.getString("nickname");
-            String passwordDigest = res.getString("password_digest");
-            Boolean isRegistered = true;
-            if ( passwordDigest == null ) {
-            	isRegistered = false;
-            }
+            Integer status = res.getInt("status");
+            Boolean vip = res.getBoolean("vip");
             
             ISFSObject outData = (ISFSObject) event.getParameter(SFSEventParam.LOGIN_OUT_DATA);
             outData.putUtfString(SFSConstants.NEW_LOGIN_NAME, nickname);
             
             _session.setProperty(ZoneExtension.USER_ID, res.getInt("id"));
-            _session.setProperty(ZoneExtension.USER_REGISTERED, isRegistered);
+            _session.setProperty(ZoneExtension.USER_STATUS, status);
+            _session.setProperty(ZoneExtension.USER_VIP, vip);
             _session.setProperty(ZoneExtension.ROOM_NAME, _data.getUtfString(ZoneExtension.ROOM_NAME));
             
 			// Return connection to the DBManager connection pool

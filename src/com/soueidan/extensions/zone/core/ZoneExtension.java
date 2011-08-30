@@ -11,7 +11,9 @@ public class ZoneExtension extends SFSExtension {
 	public static final String ROOM_NAME = "room";
 	public static final String USER_ID = "user_id";
 	public static final String USER_REGISTERED = "user_registered";
+	public static final String USER_STATUS = "status";
 	public static final String USER_SESSION = "session";
+	public static final String USER_VIP = "vip";
 	
 	@Override
 	public void init() {
