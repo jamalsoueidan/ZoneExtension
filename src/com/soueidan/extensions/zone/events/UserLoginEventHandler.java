@@ -11,6 +11,7 @@ import com.smartfoxserver.v2.exceptions.SFSException;
 import com.smartfoxserver.v2.exceptions.SFSLoginException;
 import com.smartfoxserver.v2.extensions.BaseServerEventHandler;
 import com.smartfoxserver.v2.extensions.ExtensionLogLevel;
+import com.smartfoxserver.v2.security.DefaultPermissionProfile;
 import com.soueidan.extensions.zone.core.ZoneExtension;
 
 public class UserLoginEventHandler extends BaseServerEventHandler {
@@ -51,13 +52,21 @@ public class UserLoginEventHandler extends BaseServerEventHandler {
             outData.putUtfString(SFSConstants.NEW_LOGIN_NAME, nickname);
             
             _session.setProperty(ZoneExtension.USER_ID, res.getInt("id"));
-            _session.setProperty(ZoneExtension.USER_STATUS, status);
+            
+            DefaultPermissionProfile permission = DefaultPermissionProfile.GUEST;
+            if ( status == 3 ) {
+            	permission = DefaultPermissionProfile.ADMINISTRATOR;
+            } else if ( status == 2 ) {
+            	permission = DefaultPermissionProfile.MODERATOR; 
+            } else {
+            	permission = DefaultPermissionProfile.STANDARD;
+            }
+            
+            _session.setProperty("$permission", permission);
             _session.setProperty(ZoneExtension.USER_VIP, vip);
             _session.setProperty(ZoneExtension.ROOM_NAME, _data.getUtfString(ZoneExtension.ROOM_NAME));
             
-			// Return connection to the DBManager connection pool
 			connection.close();
-			
         }
         catch (SQLException e)
         {
