@@ -30,13 +30,18 @@ public class CreateRoomRequestHandler extends BaseClientRequestHandler {
 	
 	@Override
 	public void handleClientRequest(User user, ISFSObject params) {
+		trace(user.getName(), "create room");
+		
 		gameId = params.getInt("game_id");
 		userInviter = user;	
 		
 		List<User> users = getUsers(params);
-	
+		users.add(user);
+		
 		String roomName = generateRandomWord();
 	
+		// TODO ONLY ALLOW users in the params.getSFSArray("users") to access this 
+		// createdRoom, so save the users id in the room table.
 		createRoomDB(roomName);
 		
 		ISFSObject data = new SFSObject();
@@ -73,7 +78,7 @@ public class CreateRoomRequestHandler extends BaseClientRequestHandler {
         	Date dt = new Date();
         	SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         	
-        	PreparedStatement stmt = connection.prepareStatement("INSERT INTO rooms (session, creator_id, game_id, started_date) VALUES(?, ?, ?, ?)");
+        	PreparedStatement stmt = connection.prepareStatement("INSERT INTO rooms (name, creator_id, game_id, started_date) VALUES(?, ?, ?, ?)");
     		stmt.setString(1, roomName);
     		stmt.setInt(2, userId);
     		stmt.setInt(3, gameId);
