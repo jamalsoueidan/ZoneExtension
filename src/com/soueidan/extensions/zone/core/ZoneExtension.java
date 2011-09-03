@@ -13,6 +13,7 @@ public class ZoneExtension extends SFSExtension {
 	public static final String USER_REGISTERED = "user_registered";
 	public static final String USER_SESSION = "session";
 	public static final String USER_VIP = "vip";
+	public static final String USER_AVATAR = "avatar_url";
 	
 	@Override
 	public void init() {
@@ -22,7 +23,7 @@ public class ZoneExtension extends SFSExtension {
 		addEventHandler(SFSEventType.USER_LOGIN, UserLoginEventHandler.class);
 		addEventHandler(SFSEventType.USER_JOIN_ZONE, UserZoneJoinEventHandler.class);
 
-		addRequestHandler(CreateRoomRequestHandler.CREATE_ROOM, CreateRoomRequestHandler.class);	
+		addRequestHandler(CreateRoomRequestHandler.CREATE_ROOM, CreateRoomRequestHandler.class);
 	}
 	
 	@Override

@@ -32,7 +32,10 @@ public class UserZoneJoinEventHandler extends BaseServerEventHandler {
 		UserVariable userVip = new SFSUserVariable(ZoneExtension.USER_VIP, session.getProperty(ZoneExtension.USER_VIP));
 		userVip.setHidden(false);
 		
-		java.util.List<UserVariable> vars = Arrays.asList(userId, userVip);
+		UserVariable userAvatar = new SFSUserVariable(ZoneExtension.USER_AVATAR, session.getProperty(ZoneExtension.USER_AVATAR));
+		userAvatar.setHidden(false);
+		
+		java.util.List<UserVariable> vars = Arrays.asList(userId, userVip, userAvatar);
 		getApi().setUserVariables(user, vars);
 		
 		String roomName = session.getProperty(ZoneExtension.ROOM_NAME).toString();

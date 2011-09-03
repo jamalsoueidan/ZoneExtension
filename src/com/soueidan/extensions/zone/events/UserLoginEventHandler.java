@@ -35,7 +35,7 @@ public class UserLoginEventHandler extends BaseServerEventHandler {
         try {
         	Connection connection = dbManager.getConnection();
         	
-        	PreparedStatement stmt = connection.prepareStatement("SELECT id, nickname, status, vip FROM users where session=? limit 1");
+        	PreparedStatement stmt = connection.prepareStatement("SELECT id, nickname, status, vip, avatar_url FROM users where session=? limit 1");
     		stmt.setString(1, session);
     		
         	ResultSet res = stmt.executeQuery();
@@ -47,6 +47,7 @@ public class UserLoginEventHandler extends BaseServerEventHandler {
             String nickname = res.getString("nickname");
             Integer status = res.getInt("status");
             Boolean vip = res.getBoolean("vip");
+            String avatar = res.getString("avatar_url");
             
             ISFSObject outData = (ISFSObject) event.getParameter(SFSEventParam.LOGIN_OUT_DATA);
             outData.putUtfString(SFSConstants.NEW_LOGIN_NAME, nickname);
@@ -65,7 +66,7 @@ public class UserLoginEventHandler extends BaseServerEventHandler {
             _session.setProperty("$permission", permission);
             _session.setProperty(ZoneExtension.USER_VIP, vip);
             _session.setProperty(ZoneExtension.ROOM_NAME, _data.getUtfString(ZoneExtension.ROOM_NAME));
-            
+            _session.setProperty(ZoneExtension.USER_AVATAR, avatar);
 			connection.close();
         }
         catch (SQLException e)
