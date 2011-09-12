@@ -1,6 +1,7 @@
 package com.soueidan.extensions.zone.events;
 
 import java.util.Arrays;
+import java.util.List;
 
 import com.smartfoxserver.bitswarm.sessions.ISession;
 import com.smartfoxserver.v2.api.CreateRoomSettings;
@@ -26,16 +27,33 @@ public class UserZoneJoinEventHandler extends BaseServerEventHandler {
 		user = (User) event.getParameter(SFSEventParam.USER);
 		ISession session = user.getSession();
 		
-		UserVariable userId = new SFSUserVariable(ZoneExtension.USER_ID, session.getProperty(ZoneExtension.USER_ID));
-		userId.setHidden(true);
+		UserVariable gameId = new SFSUserVariable(ZoneExtension.GAME_ID, session.getProperty(ZoneExtension.GAME_ID));
+		gameId.setHidden(true);
 		
-		UserVariable userVip = new SFSUserVariable(ZoneExtension.USER_VIP, session.getProperty(ZoneExtension.USER_VIP));
-		userVip.setHidden(false);
+		UserVariable id = new SFSUserVariable(ZoneExtension.USER_ID, session.getProperty(ZoneExtension.USER_ID));
+		id.setHidden(true);
 		
-		UserVariable userAvatar = new SFSUserVariable(ZoneExtension.USER_AVATAR, session.getProperty(ZoneExtension.USER_AVATAR));
-		userAvatar.setHidden(false);
+		UserVariable vip = new SFSUserVariable(ZoneExtension.USER_VIP, session.getProperty(ZoneExtension.USER_VIP));
+		vip.setHidden(false);
 		
-		java.util.List<UserVariable> vars = Arrays.asList(userId, userVip, userAvatar);
+		UserVariable avatar = new SFSUserVariable(ZoneExtension.USER_AVATAR, session.getProperty(ZoneExtension.USER_AVATAR));
+		avatar.setHidden(false);
+		
+		// this is for ready to play or don't disturb
+		// don't think this has something to do with admin, moderator or normal user.
+		UserVariable status = new SFSUserVariable(ZoneExtension.USER_STATUS, 0);
+		status.setHidden(false);
+		
+		UserVariable win = new SFSUserVariable(ZoneExtension.USER_WIN, session.getProperty(ZoneExtension.USER_WIN));
+		win.setHidden(false);
+		
+		UserVariable loss = new SFSUserVariable(ZoneExtension.USER_LOSS, session.getProperty(ZoneExtension.USER_LOSS));
+		loss.setHidden(false);
+		
+		UserVariable points = new SFSUserVariable(ZoneExtension.USER_POINTS, session.getProperty(ZoneExtension.USER_POINTS));
+		points.setHidden(false);
+		
+		List<UserVariable> vars = Arrays.asList(gameId, id, vip, avatar, status, win, loss, points);
 		getApi().setUserVariables(user, vars);
 		
 		String roomName = session.getProperty(ZoneExtension.ROOM_NAME).toString();

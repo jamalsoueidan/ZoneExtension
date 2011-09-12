@@ -67,6 +67,33 @@ public class UserLoginEventHandler extends BaseServerEventHandler {
             _session.setProperty(ZoneExtension.USER_VIP, vip);
             _session.setProperty(ZoneExtension.ROOM_NAME, _data.getUtfString(ZoneExtension.ROOM_NAME));
             _session.setProperty(ZoneExtension.USER_AVATAR, avatar);
+            
+            int gameId = _data.getInt("game_id");
+            
+            trace("GameId", gameId);
+            
+            stmt = connection.prepareStatement("SELECT win,loss,points FROM stats WHERE user_id=? AND game_id=? limit 1");
+    		stmt.setInt(1, res.getInt("id"));
+    		stmt.setInt(2, gameId);
+            
+    		res = stmt.executeQuery();
+    		
+    		Integer win = 0;
+            Integer loss = 0;
+            Integer points = 0;
+             
+    		if (res.first()) {
+        		win = res.getInt("win");
+        		loss = res.getInt("loss");
+        		points = res.getInt("points");
+			}
+            
+    		_session.setProperty(ZoneExtension.USER_WIN, win);
+    		_session.setProperty(ZoneExtension.USER_LOSS, loss);
+    		_session.setProperty(ZoneExtension.USER_POINTS, points);
+    		
+    		_session.setProperty(ZoneExtension.GAME_ID, gameId);
+    		
 			connection.close();
         }
         catch (SQLException e)
